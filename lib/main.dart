@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_collection_demo/pages/canvas/canvas_canvas1_page.dart';
+import 'package:flutter_collection_demo/pages/canvas/canvas_canvas2_page.dart';
 import 'package:flutter_collection_demo/pages/canvas/canvas_paint_page.dart';
 import 'package:flutter_collection_demo/util/screen_util.dart';
 
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       routes: {
         CanvasPaintPage.sName: (_) => CanvasPaintPage(),
         CanvasCanvas1Page.sName: (_) => CanvasCanvas1Page(),
+        CanvasCanvas2Page.sName: (_) => CanvasCanvas2Page(),
       },
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -85,6 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           _buildListItem(CanvasPaintPage.sName),
           _buildListItem(CanvasCanvas1Page.sName),
+          _buildListItem(CanvasCanvas2Page.sName),
         ],
       ),
     );
