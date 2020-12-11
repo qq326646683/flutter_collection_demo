@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_collection_demo/pages/canvas/canvas_canvas1_page.dart';
-import 'package:flutter_collection_demo/pages/canvas/canvas_canvas2_page.dart';
-import 'package:flutter_collection_demo/pages/canvas/canvas_paint_page.dart';
-import 'package:flutter_collection_demo/pages/canvas/canvas_path1_page.dart';
-import 'package:flutter_collection_demo/util/screen_util.dart';
+import 'package:flutter_collection_demo/page/function_page.dart';
+import 'package:flutter_collection_demo/page/more_page.dart';
+import 'package:flutter_collection_demo/page/widget_page.dart';
+import 'package:flutter_collection_demo/util/common_util.dart';
+import 'package:flutter_collection_demo/util/navigation/navigation_util.dart';
+import 'package:oktoast/oktoast.dart';
+
+import 'net/model_factory.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,19 +15,16 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return OKToast(
+      child: MaterialApp(
+        navigatorKey: CommonUtil.navigatorKey,
+        navigatorObservers: [NavigationUtil.getInstance()],
+        theme: ThemeData(
+          primarySwatch: Colors.orange,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),
-      routes: {
-        CanvasPaintPage.sName: (_) => CanvasPaintPage(),
-        CanvasCanvas1Page.sName: (_) => CanvasCanvas1Page(),
-        CanvasCanvas2Page.sName: (_) => CanvasCanvas2Page(),
-        CanvasPath1Page.sName: (_) => CanvasPath1Page(),
-      },
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -39,75 +39,52 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Widget _renderHeader() {
-    return Container(
-      alignment: Alignment.center,
-      width: ScreenUtil.isVertical(context) ? ScreenUtil.screenWidth(context) : ScreenUtil.screenWidth(context) / 2,
-      height: ScreenUtil.isVertical(context) ? ScreenUtil.screenWidth(context) * 0.4 : ScreenUtil.screenHeight(context),
-      color: Colors.pinkAccent,
-      child: Text('我是头部'),
-    );
+  // 页面控制
+  PageController _pageController;
+
+  // 当前页面
+  int _pageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    ModelFactory.registerAllCreator();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  // 底部栏切换
+  void _onBottomNavigationBarTap(int index) {
+    _pageController.animateToPage(index, duration: Duration(milliseconds: 200), curve: Curves.linear);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+      body: PageView(
+        controller: _pageController,
+        children: <Widget>[WidgetPage(), FunctionPage(), MorePage()],
+        onPageChanged: (index) {
+          setState(() {
+            _pageIndex = index;
+          });
+        },
       ),
-      body: ScreenUtil.isVertical(context) ? _buildVertical() : _buildHorizontal(), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-
-  Widget _buildVertical() {
-    return Column(
-      children: [
-        _renderHeader(),
-        Expanded(
-          child: _buildList(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildHorizontal() {
-    return Row(
-      children: [
-        _renderHeader(),
-        Expanded(
-          child: _buildList(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildList() {
-    return SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildListItem(CanvasPaintPage.sName),
-          _buildListItem(CanvasCanvas1Page.sName),
-          _buildListItem(CanvasCanvas2Page.sName),
-          _buildListItem(CanvasPath1Page.sName),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _pageIndex,
+        type: BottomNavigationBarType.fixed,
+        fixedColor: Colors.black,
+        onTap: _onBottomNavigationBarTap,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.dashboard), title: Text('组件')),
+          BottomNavigationBarItem(icon: Icon(Icons.style), title: Text('功能')),
+          BottomNavigationBarItem(icon: Icon(Icons.more_vert), title: Text('更多')),
         ],
-      ),
-    );
-  }
-
-  _buildListItem(String routName) {
-    return FlatButton(
-      onPressed: () {
-        Navigator.pushNamed(context, routName);
-      },
-      child: Card(
-        child: Container(
-          alignment: Alignment.center,
-          width: ScreenUtil.isVertical(context) ? ScreenUtil.screenWidth(context) : ScreenUtil.screenWidth(context) / 2,
-          height: ScreenUtil.screenWidth(context) * 0.1,
-          child: Text(routName),
-        ),
       ),
     );
   }
