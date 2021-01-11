@@ -1,3 +1,4 @@
+import 'package:dokit/dokit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_collection_demo/page/function_page.dart';
 import 'package:flutter_collection_demo/page/more_page.dart';
@@ -9,7 +10,10 @@ import 'package:oktoast/oktoast.dart';
 import 'net/model_factory.dart';
 
 void main() {
-  runApp(MyApp());
+  DoKit.runApp(
+    app: DoKitApp(MyApp()),
+    useInRelease: true
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -60,7 +64,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // 底部栏切换
   void _onBottomNavigationBarTap(int index) {
-    _pageController.animateToPage(index, duration: Duration(milliseconds: 200), curve: Curves.linear);
+    _pageController.animateToPage(index,
+        duration: Duration(milliseconds: 200), curve: Curves.linear);
   }
 
   @override
@@ -81,9 +86,11 @@ class _MyHomePageState extends State<MyHomePage> {
         fixedColor: Colors.black,
         onTap: _onBottomNavigationBarTap,
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.dashboard), title: Text('组件')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard), title: Text('组件')),
           BottomNavigationBarItem(icon: Icon(Icons.style), title: Text('功能')),
-          BottomNavigationBarItem(icon: Icon(Icons.more_vert), title: Text('更多')),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.more_vert), title: Text('更多')),
         ],
       ),
     );
