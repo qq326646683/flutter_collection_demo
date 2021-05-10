@@ -4,6 +4,7 @@ import 'package:flutter_collection_demo/model/banner_model.dart';
 import 'package:flutter_collection_demo/net/http_manager.dart';
 import 'package:flutter_collection_demo/net/response_result.dart';
 import 'package:flutter_collection_demo/util/overlay_util.dart';
+import 'package:flutter_collection_demo/util/queue_util.dart';
 import 'package:flutter_collection_demo/util/toast_util.dart';
 import 'package:flutter_collection_demo/widget/circular_icon.dart';
 import 'package:flutter_collection_demo/widget/click_button.dart';
@@ -117,11 +118,54 @@ class _FunctionPageState extends State<FunctionPage> with AutomaticKeepAliveClie
                   icon: Icons.format_list_bulleted,
                 ),
               ),
+              ListItem(
+                title: '队列任务',
+                describe: '多处调用耗时任务,将其队列执行',
+                onPressed: () async {
+                  print("加入队列-net, taskNo: 1");
+                  QueueUtil.get("net").addTask(() {
+                    return _doFuture("net", 1);
+                  });
+                  print("加入队列-net, taskNo: 2");
+                  QueueUtil.get("net").addTask(() {
+                    return _doFuture("net", 2);
+                  });
+                  print("加入队列-local, taskNo: 1");
+                  QueueUtil.get("local").addTask(() {
+                    return _doFuture("local", 1);
+                  });
+                },
+                icon: CircularIcon(
+                  bgColor: Theme
+                      .of(context)
+                      .primaryColor,
+                  icon: Icons.format_list_bulleted,
+                ),
+              ),
+              ListItem(
+                title: '取消队列任务',
+                describe: '多处调用耗时任务,将其队列执行',
+                onPressed: () async {
+                  QueueUtil.get("net").cancelTask();
+                },
+                icon: CircularIcon(
+                  bgColor: Theme
+                      .of(context)
+                      .primaryColor,
+                  icon: Icons.format_list_bulleted,
+                ),
+              ),
             ]),
           ),
         ],
       ),
     );
+  }
+
+  Future _doFuture(String queueName, int taskNo) {
+    return Future.delayed(Duration(seconds: 2), () {
+      print("任务完成  queueName: $queueName, taskNo: $taskNo");
+    });
   }
 
   @override
