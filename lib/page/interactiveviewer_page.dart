@@ -8,7 +8,7 @@ import 'package:video_player/video_player.dart';
 class DemoSourceEntity {
   int id;
   String url;
-  String previewUrl;
+  String? previewUrl;
   String type;
 
   DemoSourceEntity(this.id, this.type, this.url, {this.previewUrl});
@@ -154,35 +154,32 @@ class DemoVideoItem extends StatefulWidget {
   final DemoSourceEntity source;
   final bool isFocus;
 
-  DemoVideoItem(this.source, {this.isFocus});
+  DemoVideoItem(this.source, {required this.isFocus});
 
   @override
   _DemoVideoItemState createState() => _DemoVideoItemState();
 }
 
 class _DemoVideoItemState extends State<DemoVideoItem> {
-  VideoPlayerController _controller;
-  VoidCallback listener;
-  String localFileName;
-
-  _DemoVideoItemState() {
-    listener = () {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    };
-  }
+  late VideoPlayerController _controller;
+  late VoidCallback listener;
 
   @override
   void initState() {
     super.initState();
+
     print('initState: ${widget.source.id}');
     init();
   }
 
   init() async {
     _controller = VideoPlayerController.network(widget.source.url);
+    listener = () {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    };
     // loop play
     _controller.setLooping(true);
     await _controller.initialize();
@@ -195,8 +192,8 @@ class _DemoVideoItemState extends State<DemoVideoItem> {
     super.dispose();
     print('dispose: ${widget.source.id}');
     _controller.removeListener(listener);
-    _controller?.pause();
-    _controller?.dispose();
+    _controller.pause();
+    _controller.dispose();
   }
 
   @override
@@ -205,13 +202,13 @@ class _DemoVideoItemState extends State<DemoVideoItem> {
 
     if (oldWidget.isFocus && !widget.isFocus) {
       // pause
-      _controller?.pause();
+      _controller.pause();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return _controller.value.initialized
+    return _controller.value.isInitialized
         ? Stack(
             alignment: Alignment.center,
             children: [

@@ -16,13 +16,13 @@ class NetMethod {
 class HttpManager {
   static String TAG = 'HttpManager';
   static Dio dio = new Dio(BaseOptions(connectTimeout: 10000));
-  static String _token;
+  static String? _token;
 
   static setToken(String t) {
     _token = t;
   }
 
-  static Future<ResponseResult> netFetch<T>(url, String method, {noTip = false, bool isList = false, Map queryParameters, dynamic postParams}) async {
+  static Future<ResponseResult> netFetch<T>(url, String method, {noTip = false, bool isList = false, Map<String, dynamic>? queryParameters, dynamic postParams}) async {
     ResponseResult responseResult = isList ? new ResponseResult<List<T>>() : new ResponseResult<T>();
 
     /// 无网络
@@ -34,7 +34,7 @@ class HttpManager {
     Options option = new Options(method: method);
     Response response;
 
-    String token = await getToken();
+    String? token = await getToken();
     if (token != null) option.headers = {'Authorization': 'Bearer $token'};
     try {
       response = await dio.request('https://www.wanandroid.com/' + url, data: postParams, options: option, queryParameters: queryParameters);
@@ -60,7 +60,7 @@ class HttpManager {
           } else {
             responseResult.setData(response.statusCode, response.data, null, response.data['errorCode'], response.data['errorMsg']);
           }
-          if (!noTip) ToastUtil.showWarning(responseResult.msg);
+          if (!noTip) ToastUtil.showWarning(responseResult.msg ?? "");
         }
       } else {
         responseResult.statusCode = response.statusCode;
@@ -68,15 +68,15 @@ class HttpManager {
         responseResult.code = Code.CODE_REQUEST_ERROR;
       }
     } on DioError catch (e) {
-      if (e.response != null) responseResult.sourceData = e.response.data;
+      if (e.response != null) responseResult.sourceData = e.response?.data;
       int statusCode = Code.STATUS_CODE_DIO_ERROR;
-      if (e.type == DioErrorType.CONNECT_TIMEOUT || e.type == DioErrorType.SEND_TIMEOUT || e.type == DioErrorType.RECEIVE_TIMEOUT) {
+      if (e.type == DioErrorType.connectTimeout || e.type == DioErrorType.sendTimeout || e.type == DioErrorType.receiveTimeout) {
         statusCode = Code.STATUS_CODE_NETWORK_TIMEOUT;
-      } else if (e.type == DioErrorType.CANCEL) {
+      } else if (e.type == DioErrorType.cancel) {
         statusCode = Code.STATUS_CODE_NETWORK_CANCEL;
       }
-      if (e.response != null && e.response.statusCode != null) {
-        statusCode = e.response.statusCode;
+      if (e.response != null && e.response?.statusCode != null) {
+        statusCode = e.response!.statusCode!;
       }
       responseResult.statusCode = Code.errorHandleEunction(statusCode, "", noTip);
       responseResult.code = Code.CODE_REQUEST_ERROR;
@@ -88,7 +88,7 @@ class HttpManager {
     return statusCode == 200 || statusCode == 201;
   }
 
-  static Future<String> getToken() async {
+  static Future<String?> getToken() async {
     if (_token == null) {
       String spToken = '';//await StorageUtil.getInstance().get(Const.TOKEN_KEY);
       if (spToken != null) {

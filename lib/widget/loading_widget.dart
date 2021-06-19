@@ -10,13 +10,13 @@ class LoadingWidget extends StatelessWidget {
     return Column(
       children: <Widget>[
         SizedBox(
-          height: headerContainerH + S().statusBarHeight,
+          height: (S.getInstance()?.statusBarHeight ?? 0) + headerContainerH,
         ),
         Expanded(
           child: Container(
             color: Colors.transparent,
             alignment: Alignment.center,
-            padding: EdgeInsets.only(bottom: headerContainerH / 2 + S().statusBarHeight),
+            padding: EdgeInsets.only(bottom: (S.getInstance()?.statusBarHeight ?? 0) + headerContainerH / 2),
             child: Container(
               width: 90,
               height: 90,

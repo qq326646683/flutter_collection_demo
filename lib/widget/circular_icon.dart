@@ -10,10 +10,10 @@ class CircularIcon extends StatelessWidget {
   final Color bgColor;
 
   /// Icon
-  final IconData icon;
+  final IconData? icon;
 
   const CircularIcon({
-    Key key,
+    Key? key,
     this.color = Colors.white,
     this.bgColor = Colors.orange,
     this.icon,

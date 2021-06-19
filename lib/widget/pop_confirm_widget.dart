@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_collection_demo/util/overlay_util.dart';
 import 'package:flutter_collection_demo/util/screen_util.dart';
 import 'package:flutter_collection_demo/widget/click_button.dart';
+import 'package:flutter_collection_demo/util/extension/int_extension.dart';
+
 
 class PopConfirmWidget extends StatelessWidget {
-  String titleTxt;
-  String contentTxt;
+  String? titleTxt;
+  String? contentTxt;
   List<String> titleList;
   TextStyle titleStyle;
   List<BoxShadow> buttonShadow;
   bool alwayShow;
-  ValueChanged onClickIndex;
+  ValueChanged? onClickIndex;
   bool showCloseIcon;
 
-  PopConfirmWidget({this.titleTxt, this.contentTxt, this.titleList, this.alwayShow = false, this.onClickIndex, this.showCloseIcon = false, titleStyle, buttonShadow})
+  PopConfirmWidget({this.titleTxt, this.contentTxt, required this.titleList, this.alwayShow = false, this.onClickIndex, this.showCloseIcon = false, titleStyle, buttonShadow})
       : this.titleStyle = titleStyle ??
             TextStyle(
-              fontSize: S().w(20),
+              fontSize: 20.dp,
               fontWeight: FontWeight.w500,
             ),
         this.buttonShadow = buttonShadow ?? [BoxShadow(color: Color(0x44000000), blurRadius: 5, offset: Offset(0, 2))];
@@ -26,16 +28,16 @@ class PopConfirmWidget extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(left: S().w(26), right: S().w(27), top: S().w(22), bottom: S().w(38)),
+          padding: EdgeInsets.only(left: 26.dp, right: 27.dp, top: 22.dp, bottom: 38.dp),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               titleTxt != null
                   ? Container(
                       alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.only(bottom: S().h(17)),
+                      padding: EdgeInsets.only(bottom: 17.dp),
                       child: Text(
-                        titleTxt,
+                        titleTxt!,
                         style: titleStyle,
                       ),
                     )
@@ -43,12 +45,12 @@ class PopConfirmWidget extends StatelessWidget {
               contentTxt != null
                   ? Container(
                       alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.only(bottom: S().h(25)),
+                      padding: EdgeInsets.only(bottom: 25.dp),
                       child: Text(
-                        contentTxt,
+                        contentTxt!,
                         style: TextStyle(
                           color: Color(0xFF8D8D8D),
-                          fontSize: S().w(14),
+                          fontSize: 14.dp,
                           decoration: TextDecoration.none,
                         ),
                       ),
@@ -71,8 +73,8 @@ class PopConfirmWidget extends StatelessWidget {
                     },
                     child: Container(
                       alignment: Alignment.center,
-                      width: S().w(120),
-                      height: S().w(52),
+                      width: 120.dp,
+                      height: 52.dp,
                       decoration: BoxDecoration(
                         color: isLast ? Color(0xFFCE5431) : Colors.white,
                         border: isLast ? null : Border.all(color: Color(0xffD2D2D2), width: 1),
@@ -83,11 +85,11 @@ class PopConfirmWidget extends StatelessWidget {
                         style: isLast
                             ? TextStyle(
                                 color: Colors.white,
-                                fontSize: S().w(18),
+                                fontSize: 18.dp,
                               )
                             : TextStyle(
                                 color: Color(0xff30344D),
-                                fontSize: S().w(18),
+                                fontSize: 18.dp,
                               ),
                       ),
                     ),
@@ -99,8 +101,8 @@ class PopConfirmWidget extends StatelessWidget {
         ),
         if (showCloseIcon)
           Positioned(
-            right: S().w(17),
-            top: S().w(17),
+            right: 17.dp,
+            top: 17.dp,
             child: ClickButton(
               child: Icon(
                 Icons.close,

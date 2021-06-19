@@ -29,13 +29,13 @@ class ModelFactory {
 
   Map<Type, CreateModel> typeMaps = new Map();
 
-  static ModelFactory _instance;
+  static ModelFactory? _instance;
 
   static ModelFactory getInstance() {
     if (_instance == null) {
       _instance = new ModelFactory();
     }
-    return _instance;
+    return _instance!;
   }
 
   _registerCreator(Type type, CreateModel creator) {
@@ -43,14 +43,14 @@ class ModelFactory {
   }
 
   T _generateModel<T>(Map<String, dynamic> json) {
-    CreateModel creator = typeMaps[T];
+    CreateModel? creator = typeMaps[T];
     if (creator == null) throw Exception('未注册[$T]解析器');
     return creator(json);
   }
 
   List<T> _generateModelList<T>(List<dynamic> jsonList) {
-    CreateModel creator = typeMaps[T];
+    CreateModel? creator = typeMaps[T];
     if (creator == null) throw Exception('未注册[$T]解析器');
-    return jsonList.map((dynamic json) => json != null ? creator(json) as T : null).toList();
+    return jsonList.map((dynamic json) => creator(json) as T).toList();
   }
 }

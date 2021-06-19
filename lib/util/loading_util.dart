@@ -11,7 +11,7 @@ class LoadingUtil {
 
   static show() {
     if (isShowing == false) {
-      CommonUtil.navigatorState.overlay.insert(entry);
+      CommonUtil.navigatorState?.overlay?.insert(entry);
       isShowing = true;
     }
   }

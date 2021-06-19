@@ -13,17 +13,17 @@ enum LoadDataStatus { Loading, Success, SuccessEmpty, Failure }
 
 class ListViewWidget extends StatefulWidget {
   final IndexedWidgetBuilder buildItem;
-  final int itemCount;
+  final int? itemCount;
   final FetchCallBack fetchCallBack;
   final String emptyImg;
   final String emptyText;
   final bool firstRefresh;
 
   ListViewWidget({
-    Key key,
-    @required this.buildItem,
-    @required this.itemCount,
-    this.fetchCallBack,
+    Key? key,
+    required this.buildItem,
+    this.itemCount,
+    required this.fetchCallBack,
     this.emptyImg = Assets.icon_logo_loading,
     this.emptyText = 'No Data',
     this.firstRefresh = true,
@@ -34,10 +34,10 @@ class ListViewWidget extends StatefulWidget {
 }
 
 class _ListViewWidgetState extends State<ListViewWidget> {
-  EasyRefreshController _controller;
-  ScrollController _scrollController;
+  late EasyRefreshController _controller;
+  ScrollController? _scrollController;
   int page = 1;
-  LoadDataStatus loadStatus;
+  LoadDataStatus? loadStatus;
 
   @override
   void initState() {
@@ -97,7 +97,7 @@ class _ListViewWidgetState extends State<ListViewWidget> {
 
   Future<void> _onRefresh() async {
     page = 1;
-    ResponseResult response = await widget.fetchCallBack?.call(page);
+    ResponseResult response = await widget.fetchCallBack.call(page);
     if (response.isSuccess) {
       _controller.finishRefresh(success: true);
       _controller.finishLoad(
@@ -123,7 +123,7 @@ class _ListViewWidgetState extends State<ListViewWidget> {
         loadStatus = LoadDataStatus.Loading;
       });
     page = 1;
-    ResponseResult response = await widget.fetchCallBack?.call(page);
+    ResponseResult response = await widget.fetchCallBack.call(page);
     if (response.isSuccess) {
       if (mounted)
         setState(() {
@@ -139,7 +139,7 @@ class _ListViewWidgetState extends State<ListViewWidget> {
 
   Future<void> _onLoad() async {
     page++;
-    ResponseResult response = await widget.fetchCallBack?.call(page);
+    ResponseResult response = await widget.fetchCallBack.call(page);
     if (response.isSuccess) {
       _controller.finishLoad(
         success: true,

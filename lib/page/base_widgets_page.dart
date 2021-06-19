@@ -43,8 +43,8 @@ class _BaseWidgetsPageState extends State<BaseWidgetsPage> {
               await OverlayUtil.showPull(
                 context,
                 child: Container(
-                  width: S().screenWidth,
-                  height: S().screenHeight * 0.3,
+                  width: S.getInstance()?.screenWidth,
+                  height: (S.getInstance()?.screenHeight ?? 0) * 0.3,
                   child: Text('baahhhfsdf'),
                 ),
               );
@@ -53,7 +53,7 @@ class _BaseWidgetsPageState extends State<BaseWidgetsPage> {
           ),
           ListTile(
             onTap: () async {
-              int resultIndex = await OverlayUtil.showPop(
+              int? resultIndex = await OverlayUtil.showPop(
                   barrierDismissible: false,
                   child: PopConfirmWidget(
                     titleTxt: 'Allow Maestro to access y',

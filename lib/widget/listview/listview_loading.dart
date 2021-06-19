@@ -7,7 +7,7 @@ class ListViewLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: S().screenWidth,
+        width: S.getInstance()?.screenWidth,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

@@ -8,7 +8,7 @@ class BannerModel {
   int type;
   String url;
 
-  BannerModel({this.id, this.desc, this.imagePath, this.isVisible, this.order, this.title, this.type, this.url});
+  BannerModel({required this.id, required this.desc, required this.imagePath, required this.isVisible, required this.order, required this.title, required this.type, required this.url});
 
   factory BannerModel.fromJson(Map<String, dynamic> json) => BannerModel(
         id: json['id'] as int,

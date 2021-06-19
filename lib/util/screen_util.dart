@@ -5,10 +5,10 @@ const double designW = 375.0;
 const double designH = 810.0;
 
 class S {
-  double _screenWidth;
-  double _screenHeight;
-  double _statusBarHeight;
-  double _bottomBarHeight;
+  late double _screenWidth;
+  late double _screenHeight;
+  late double _statusBarHeight;
+  late double _bottomBarHeight;
 
 
   double get screenWidth => _screenWidth;
@@ -20,9 +20,9 @@ class S {
   double get bottomBarHeight => _bottomBarHeight;
 
 
-  static S _instance;
+  static S? _instance;
 
-  factory  S() {
+  static S? getInstance() {
     if (_instance == null) {
       _instance = new S._();
     }
@@ -38,7 +38,7 @@ class S {
   }
 
   S._() {
-    MediaQueryData mediaQuery = MediaQuery.of(CommonUtil.currentContext);
+    MediaQueryData mediaQuery = MediaQuery.of(CommonUtil.currentContext!);
 
     _screenWidth = mediaQuery.size.width;
     _screenHeight = mediaQuery.size.height;

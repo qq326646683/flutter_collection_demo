@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_collection_demo/util/screen_util.dart';
 import 'package:flutter_collection_demo/widget/click_button.dart';
+import 'package:flutter_collection_demo/util/extension/int_extension.dart';
+
 
 class SnackbarWidget extends StatefulWidget {
   final String title;
-  final bool autoDismiss;
+  final bool? autoDismiss;
   final List<String> actionTitleList;
   final List<VoidCallback> actionTapList;
 
-  SnackbarWidget({Key key, this.title = '', this.autoDismiss, this.actionTitleList, this.actionTapList}) : super(key: key);
+  SnackbarWidget({Key? key, this.title = '', this.autoDismiss, required this.actionTitleList, required this.actionTapList}) : super(key: key);
 
   @override
   SnackbarWidgetState createState() => SnackbarWidgetState();
@@ -16,7 +18,7 @@ class SnackbarWidget extends StatefulWidget {
 
 class SnackbarWidgetState extends State<SnackbarWidget> {
   double height = 0;
-  String title;
+  late String title;
 
   @override
   void initState() {
@@ -27,7 +29,7 @@ class SnackbarWidgetState extends State<SnackbarWidget> {
   show() {
     if (mounted)
       setState(() {
-        height = S().w(100) + S().bottomBarHeight;
+        height = (S.getInstance()?.bottomBarHeight ?? 0) + 100.dp;
       });
   }
 
@@ -68,18 +70,18 @@ class SnackbarWidgetState extends State<SnackbarWidget> {
             ],
           ),
           duration: Duration(milliseconds: 200),
-          width: S().screenWidth,
+          width: S.getInstance()?.screenWidth,
           height: height,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: S().w(20)),
+            padding: EdgeInsets.symmetric(horizontal: 20.dp),
             child: Row(
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    title ?? '',
+                    title,
                     style: TextStyle(
                       fontFamily: 'Helvetica',
-                      fontSize: S().w(18.0),
+                      fontSize: 18.dp,
                       color: Color(0xff30344D),
                       decoration: TextDecoration.none,
                       fontWeight: FontWeight.normal,
@@ -90,8 +92,8 @@ class SnackbarWidgetState extends State<SnackbarWidget> {
                     ClickButton(
                       onTap: widget.actionTapList[widget.actionTitleList.indexOf(e)],
                       child: Container(
-                        width: S().w(92),
-                        height: S().w(52),
+                        width: 92.dp,
+                        height: 52.dp,
                         margin: EdgeInsets.only(left: 10),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
@@ -107,7 +109,7 @@ class SnackbarWidgetState extends State<SnackbarWidget> {
                         ),
                         child: Text(e, style: TextStyle(
                           fontFamily: 'Helvetica',
-                          fontSize: S().w(16.0),
+                          fontSize: 16.dp,
                           color: Color(0xff30344D),
                           decoration: TextDecoration.none,
                           fontWeight: FontWeight.normal,

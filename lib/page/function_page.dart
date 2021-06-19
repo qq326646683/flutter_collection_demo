@@ -87,7 +87,7 @@ class _FunctionPageState extends State<FunctionPage> with AutomaticKeepAliveClie
                     title: '网络请求json解析',
                     describe: 'dio的封装',
                     onPressed: () async {
-                      ResponseResult<List<BannerModel>> response = await HttpManager.netFetch<BannerModel>('banner/json', NetMethod.GET, isList: true);
+                      ResponseResult<List<BannerModel>> response = await HttpManager.netFetch<BannerModel>('banner/json', NetMethod.GET, isList: true) as ResponseResult<List<BannerModel>>;
                       if (response.isSuccess) {
                         OverlayUtil.showPull(context,
                             child: Container(
@@ -95,7 +95,7 @@ class _FunctionPageState extends State<FunctionPage> with AutomaticKeepAliveClie
                                 scrollDirection: Axis.horizontal,
                                 padding: EdgeInsets.symmetric(vertical: 20),
                                 child: Row(
-                                  children: [for (BannerModel banner in response.data) ClickButton(
+                                  children: [for (BannerModel banner in response.data!) ClickButton(
                                     onTap: () async {
                                       if (await canLaunch(banner.url)) {
                                         await launch(banner.url);
@@ -127,11 +127,11 @@ class _FunctionPageState extends State<FunctionPage> with AutomaticKeepAliveClie
                     describe: '多处调用耗时任务,将其队列执行',
                     onPressed: () async {
                       print("加入队列-net, taskNo: 1");
-                      QueueUtil.get("net").addTask(() {
+                      QueueUtil.get("net")?.addTask(() {
                         return _doFuture("net", 1);
                       });
                       print("加入队列-net, taskNo: 2");
-                      QueueUtil.get("net").addTask(() {
+                      QueueUtil.get("net")?.addTask(() {
                         return _doFuture("net", 2);
                       });
                       // print("加入队列-local, taskNo: 1");
@@ -150,7 +150,7 @@ class _FunctionPageState extends State<FunctionPage> with AutomaticKeepAliveClie
                     title: '取消队列任务',
                     describe: '多处调用耗时任务,将其队列执行',
                     onPressed: () async {
-                      QueueUtil.get("net").cancelTask();
+                      QueueUtil.get("net")?.cancelTask();
                     },
                     icon: CircularIcon(
                       bgColor: Theme

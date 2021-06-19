@@ -9,9 +9,9 @@ class LoadDataWidget extends StatefulWidget {
   final Widget child;
   final Function loadData;
   final bool needDelay;
-  final LoadDataStatus newDataStatus;
+  final LoadDataStatus? newDataStatus;
 
-  LoadDataWidget({Key key, @required this.loadData, @required this.child, this.needDelay = false, this.newDataStatus}) : super(key: key);
+  LoadDataWidget({Key? key, required this.loadData, required this.child, this.needDelay = false, this.newDataStatus}) : super(key: key);
 
   @override
   LoadDataWidgetState createState() => LoadDataWidgetState();
@@ -34,9 +34,9 @@ class LoadDataWidgetState extends State<LoadDataWidget> {
   void didUpdateWidget(LoadDataWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.newDataStatus != oldWidget.newDataStatus) {
-      if (mounted)
+      if (mounted && widget.newDataStatus != null)
         setState(() {
-          loadStatus = widget.newDataStatus;
+          loadStatus = widget.newDataStatus!;
         });
     }
   }
@@ -47,7 +47,7 @@ class LoadDataWidgetState extends State<LoadDataWidget> {
         loadStatus = LoadDataStatus.Loading;
       });
 
-    ResponseResult response = await widget.loadData?.call();
+    ResponseResult response = await widget.loadData.call();
     if (response.isSuccess) {
       if (response.data is List && (response.data as List).isEmpty) {
         loadStatus = LoadDataStatus.SuccessEmpty;

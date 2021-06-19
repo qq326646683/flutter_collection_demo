@@ -4,24 +4,24 @@ import 'package:flutter_collection_demo/widget/click_button.dart';
 /// 列表项
 class ListItem extends StatefulWidget {
   // 点击事件
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   // 图标
-  final Widget icon;
+  final Widget? icon;
   // 标题
   final String title;
   final Color titleColor;
   // 描述
-  final String describe;
+  final String? describe;
   final Color describeColor;
   // 右侧控件
-  final Widget rightWidget;
+  final Widget? rightWidget;
 
   // 构造函数
   ListItem({
-    Key key,
+    Key? key,
     this.onPressed,
     this.icon,
-    this.title,
+    required this.title,
     this.titleColor: Colors.black,
     this.describe,
     this.describeColor: Colors.grey,
@@ -72,7 +72,7 @@ class _ListItemState extends State<ListItem> {
                         : Container(),
                     widget.describe != null
                         ? Text(
-                      widget.describe,
+                      widget.describe ?? "",
                       maxLines: 2,
                       style: TextStyle(
                           color: widget.describeColor, fontSize: 12.0),
@@ -81,7 +81,7 @@ class _ListItemState extends State<ListItem> {
                   ],
                 ),
               ),
-              widget.rightWidget == null ? Container() : widget.rightWidget,
+              widget.rightWidget == null ? Container() : widget.rightWidget!,
               Container(
                 width: 14.0,
               ),

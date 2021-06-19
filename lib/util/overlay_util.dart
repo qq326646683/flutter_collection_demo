@@ -7,15 +7,15 @@ import 'package:flutter_collection_demo/widget/click_button.dart';
 
 class OverlayUtil {
   static bool isPopShowing = false;
-  static OverlayEntry popEntry;
-  static Completer<dynamic> popCompleter;
+  static late OverlayEntry popEntry;
+  static Completer<int>? popCompleter;
 
-  static Future<T> showPop<T>({
-    @required Widget child,
+  static Future<int>? showPop({
+    required Widget child,
     barrierDismissible = true,
     barrierColor = const Color(0x99000000),
   }) {
-    popCompleter = Completer<T>();
+    popCompleter = Completer<int>();
     popEntry = OverlayEntry(builder: (BuildContext context) {
       return WillPopScope(
         onWillPop: () async {
@@ -42,20 +42,19 @@ class OverlayUtil {
         ),
       );
     });
-    CommonUtil.navigatorState.overlay.insert(popEntry);
+    CommonUtil.navigatorState?.overlay?.insert(popEntry);
     isPopShowing = true;
-    return popCompleter.future;
+    return popCompleter?.future;
   }
 
   static hidePop() {
     if (isPopShowing == true) {
-      popEntry?.remove();
+      popEntry.remove();
       isPopShowing = false;
-      popEntry = null;
     }
   }
 
-  static showPull<T>(context, {@required Widget child, Color barrierColor, bool showTop = true}) {
+  static showPull<T>(context, {required Widget child, Color? barrierColor, bool showTop = true}) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -99,15 +98,15 @@ class OverlayUtil {
     );
   }
 
-  static OverlayEntry showOverlay({@required Widget child, barrierDismissible = true, barrierColor = const Color(0x99000000), Function dissmissCallBack}) {
-    OverlayEntry entry;
+  static OverlayEntry showOverlay({required Widget child, barrierDismissible = true, barrierColor = const Color(0x99000000), Function? dissmissCallBack}) {
+    OverlayEntry? entry;
     entry = OverlayEntry(builder: (_) {
       return Stack(
         children: <Widget>[
           ClickButton(
             onTap: () {
               if (barrierDismissible) {
-                entry.remove();
+                entry?.remove();
                 dissmissCallBack?.call();
               }
             },
@@ -120,7 +119,7 @@ class OverlayUtil {
       );
     });
 
-    CommonUtil.navigatorState.overlay.insert(entry);
+    CommonUtil.navigatorState?.overlay?.insert(entry);
     return entry;
   }
 }

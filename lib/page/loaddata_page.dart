@@ -15,7 +15,7 @@ class LoadDataPage extends StatefulWidget {
 }
 
 class _LoadDataPageState extends State<LoadDataPage> {
-  String data;
+  String? data;
 
   String currentState = 'error'; // 'error'
 
@@ -61,24 +61,24 @@ class _LoadDataPageState extends State<LoadDataPage> {
 
   /// 下面代码为service代码，实际开发中应写在xxx_service.dart, 数据用redux或provider管理
   Future<ResponseResult<String>> getData() async {
-    ResponseResult response = await fetchData();
+    ResponseResult<String> response = await fetchData();
     if (response.isSuccess) {
       setState(() {
-        data = response.data;
+        data = response.data!;
       });
     }
-    return response;
+    return Future.value(response);
   }
 
   /// 模拟网络层Dao,实际开发中应写在xxx_dao.dart
   Future<ResponseResult<String>> fetchData() async {
     await TimeUtil.sleep(1000);
-    ResponseResult response;
+    ResponseResult<String> response = ResponseResult<String>.from(200, data: 'userInfo:{name: haha}', code: Code.CODE_ALL_SUCCESS);
     if (currentState == 'success') {
       response = ResponseResult<String>.from(200, data: 'userInfo:{name: haha}', code: Code.CODE_ALL_SUCCESS);
     } else if (currentState == 'error') {
       response = ResponseResult<String>.from(400, msg: '请求失败', code: Code.CODE_REQUEST_ERROR);
     }
-    return response;
+    return Future.value(response);
   }
 }

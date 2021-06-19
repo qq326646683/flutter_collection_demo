@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return OKToast(
       child: MaterialApp(
         navigatorKey: CommonUtil.navigatorKey,
-        navigatorObservers: [NavigationUtil.getInstance()],
+        navigatorObservers: [NavigationUtil.getInstance()!],
         theme: ThemeData(
           primarySwatch: Colors.orange,
           visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -44,7 +44,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // 页面控制
-  PageController _pageController;
+  late PageController _pageController;
 
   // 当前页面
   int _pageIndex = 0;

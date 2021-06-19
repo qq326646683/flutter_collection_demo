@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_collection_demo/util/navigation/navigation_util.dart';
 
 mixin NavigationMixin<T extends StatefulWidget> on State<T> {
-  StreamSubscription<RouteInfo> streamSubscription;
-  Route lastRoute;
+  StreamSubscription<RouteInfo>? streamSubscription;
+  Route? lastRoute;
 
   @override
   void initState() {
     super.initState();
 
-    streamSubscription = NavigationUtil.getInstance().streamController.stream.listen((RouteInfo routeInfo) {
-      if (routeInfo.currentRoute.settings.name == routName) {
+    streamSubscription = NavigationUtil.getInstance()?.streamController.stream.listen((RouteInfo routeInfo) {
+      if (routeInfo?.currentRoute?.settings.name == routName) {
         onFocus();
       }
       /// 第一次监听到路由变化
@@ -20,7 +20,7 @@ mixin NavigationMixin<T extends StatefulWidget> on State<T> {
         onBlur();
       }
       /// 上一个是该页面，新的路由不是该页面
-      if (lastRoute?.settings?.name == routName && routeInfo.currentRoute.settings.name != routName) {
+      if (lastRoute?.settings?.name == routName && routeInfo?.currentRoute?.settings.name != routName) {
         onBlur();
       }
       lastRoute = routeInfo.currentRoute;

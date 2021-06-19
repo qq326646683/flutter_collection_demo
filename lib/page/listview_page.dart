@@ -14,7 +14,7 @@ class ListViewPage extends StatefulWidget {
 }
 
 class _ListViewPageState extends State<ListViewPage> {
-  List<int> dataList;
+  List<int>? dataList;
 
   String currentState = 'success'; // 'error'\'no more'\'empty'
 
@@ -76,12 +76,12 @@ class _ListViewPageState extends State<ListViewPage> {
 
   /// 下面代码为service代码，实际开发中应写在xxx_service.dart, 数据用redux或provider管理
   Future<ResponseResult<List<int>>> getData(int page) async {
-    ResponseResult response = await fetchList(page);
-    if (response.isSuccess) {
+    ResponseResult<List<int>> response = await fetchList(page);
+    if (response.isSuccess == true) {
       if (page == 1) {
         dataList = response.data;
       } else {
-        dataList.addAll(response.data);
+        dataList?.addAll(response.data!);
       }
       setState(() {});
     }
@@ -91,7 +91,7 @@ class _ListViewPageState extends State<ListViewPage> {
   /// 模拟网络层Dao,实际开发中应写在xxx_dao.dart
   Future<ResponseResult<List<int>>> fetchList(int page) async {
     await TimeUtil.sleep(1000);
-    ResponseResult response;
+    ResponseResult<List<int>> response = ResponseResult<List<int>>.from(200, data: List.generate(10, (index) => (page - 1) * 10 + index), code: Code.CODE_ALL_SUCCESS);
     if (currentState == 'success') {
       response = ResponseResult<List<int>>.from(200, data: List.generate(10, (index) => (page - 1) * 10 + index), code: Code.CODE_ALL_SUCCESS);
     } else if (currentState == 'error') {

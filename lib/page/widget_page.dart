@@ -3,6 +3,7 @@ import 'package:flutter_collection_demo/page/base_widgets_page.dart';
 import 'package:flutter_collection_demo/page/interactiveviewer_page.dart';
 import 'package:flutter_collection_demo/page/listview_page.dart';
 import 'package:flutter_collection_demo/page/loaddata_page.dart';
+import 'package:flutter_collection_demo/util/common_util.dart';
 import 'package:flutter_collection_demo/util/navigation/navigation_util.dart';
 import 'package:flutter_collection_demo/util/toast_util.dart';
 import 'package:flutter_collection_demo/widget/circular_icon.dart';
@@ -36,7 +37,7 @@ class _WidgetPageState extends State<WidgetPage> with AutomaticKeepAliveClientMi
                 title: '基础组件',
                 describe: 'loading/toast/pull/pop/snackbar封装',
                 onPressed: () {
-                  NavigationUtil.getInstance().pushNamed(BaseWidgetsPage.sName);
+                  NavigationUtil.getInstance()?.pushNamed(BaseWidgetsPage.sName);
                 },
                 icon: CircularIcon(
                   bgColor: Theme.of(context).primaryColor,
@@ -47,7 +48,9 @@ class _WidgetPageState extends State<WidgetPage> with AutomaticKeepAliveClientMi
                 title: 'ClickButton',
                 describe: '防止快速点击的Button: click_button.dart',
                 onPressed: () {
-                  ToastUtil.showSuccess('点击了');
+                  CommonUtil.throttle( () {
+                    ToastUtil.showSuccess('点击了');
+                  });
                 },
                 icon: CircularIcon(
                   bgColor: Theme.of(context).primaryColor,
@@ -58,7 +61,7 @@ class _WidgetPageState extends State<WidgetPage> with AutomaticKeepAliveClientMi
                 title: 'ListView',
                 describe: '统一封装listview组件,兼容网络异常/无更多数据/空列表',
                 onPressed: () {
-                  NavigationUtil.getInstance().pushNamed(ListViewPage.sName);
+                  NavigationUtil.getInstance()?.pushNamed(ListViewPage.sName);
                 },
                 icon: CircularIcon(
                   bgColor: Theme.of(context).primaryColor,
@@ -69,7 +72,7 @@ class _WidgetPageState extends State<WidgetPage> with AutomaticKeepAliveClientMi
                 title: 'LoadData',
                 describe: '统一封装LoadData组件，兼容网络异常',
                 onPressed: () {
-                  NavigationUtil.getInstance().pushNamed(LoadDataPage.sName);
+                  NavigationUtil.getInstance()?.pushNamed(LoadDataPage.sName);
                 },
                 icon: CircularIcon(
                   bgColor: Theme.of(context).primaryColor,
@@ -80,7 +83,7 @@ class _WidgetPageState extends State<WidgetPage> with AutomaticKeepAliveClientMi
                 title: '图片视频预览',
                 describe: 'interactiveviewer的封装,增强gallery',
                 onPressed: () {
-                  NavigationUtil.getInstance().pushNamed(InteractiveviewerPage.sName);
+                  NavigationUtil.getInstance()?.pushNamed(InteractiveviewerPage.sName);
 
                 },
                 icon: CircularIcon(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_collection_demo/util/assets_util.dart';
 import 'package:flutter_collection_demo/util/screen_util.dart';
+import 'package:flutter_collection_demo/util/extension/int_extension.dart';
+
 
 enum ToastType {
   success,
@@ -8,8 +10,8 @@ enum ToastType {
 }
 
 class ToastWidget extends StatelessWidget {
-  final String content;
-  final ToastType toastType;
+  final String? content;
+  final ToastType? toastType;
 
   ToastWidget({this.toastType, this.content});
 
@@ -17,10 +19,10 @@ class ToastWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: S().statusBarHeight),
+        SizedBox(height: S.getInstance()?.statusBarHeight),
         Container(
-          width: S().w(309),
-          height: S().w(76),
+          width: 309.dp,
+          height: 76.dp,
           padding: EdgeInsets.symmetric(horizontal: 10),
           alignment: Alignment.center,
           decoration: BoxDecoration(
@@ -34,14 +36,14 @@ class ToastWidget extends StatelessWidget {
                 padding: EdgeInsets.all(5.0),
                 child: Image.asset(
                   toastType == ToastType.warning ? Assets.icon_toast_warning : Assets.icon_toast_success,
-                  width: S().w(20),
-                  height: S().w(20),
+                  width: 20.dp,
+                  height: 20.dp,
                 ),
               ),
               Expanded(
                   child: Text(
                 content ?? '',
-                style: TextStyle(color: Color(0xff4B4B72), fontSize: S().w(16)),
+                style: TextStyle(color: Color(0xff4B4B72), fontSize: 16.dp),
               ))
             ],
           ),
